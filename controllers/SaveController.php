@@ -17,50 +17,41 @@ class SaveController extends Controller
 
             switch ($_GET['filter']) {
                 case 1:
-                    $this->pageData['data_with_sorting'] = $model::getData();
-
-                    //* передача параметров для правильной работы пагинации
-                    $this->pageData['data_get_params'] = array('' => $_GET[' ']);
+                    $data_to_write = $model::getData();
                     break;
                 case 2:
-
-                    $this->pageData['data_with_sorting'] = $model->get_sort_category($_GET['column_name'], $_GET['field']);
+                    $data_to_write = $model->get_sort_category($_GET['column_name'], $_GET['field']);
                     $this->pageData['data_get_params'] = array('column_name' => $_GET['column_name'], 'field' => $_GET['field']);
-                    
                     break;
                 case 3:
-                    $this->pageData['data_with_sorting'] = $model->get_sort_ege($_GET['ege'], $_GET['min_ege'], $_GET['max_ege']);
+                    $data_to_write = $model->get_sort_ege($_GET['ege'], $_GET['min_ege'], $_GET['max_ege']);
                     $this->pageData['data_get_params'] = array('ege' => $_GET['ege'], 'min_ege' => $_GET['min_ege'], 'max_ege' => $_GET['max_ege']);
                     break;
                 case 4:
-                    $last_number_id = is_null($_GET['last_number_id']) ? 0 : $_GET['last_number_id'];
-                    $this->pageData['data_with_sorting'] = $model->get_full_years($_GET['number_years']);
-                    $last_number_id = $this->pageData['data_with_sorting'][9]['id'];
-                    $this->pageData['data_get_params'] = array('number_years' => $_GET['number_years'], 'last_number_id' => $last_number_id);
+                    $data_to_write = $model->get_full_years($_GET['number_years']);
+                    $this->pageData['data_get_params'] = array('number_years' => $_GET['number_years']);
                     break;
             }
         } else {
            // нет данных для записи
+            echo 'нет данных для записи';
         }
 
+        $filename = "new_file.csv";
+        $fp = fopen(ROOT.'/downloads/'.$filename, 'w');
 
-        $array = array (0 => Array ('id' => id, 'category' => category, 'firstname' => firstname, 'lastname' => lastname, 'email' => email, 'gender' => gender, 'birthDate' => birthDate ));
 
-        // добавляем в начало масива название колонок
-        array_unshift($mass_data, $array); //
+        $headers = [
+            'id' => 'id', 'category' => 'category', 'firstname' => 'firstname', 'lastname' => 'lastname', 'email' => 'email', 'gender' => 'gender', 'birthDate' => 'birthDate'
+        ];
 
-        $mass_data = $array + $mass_data;
+        fputcsv($fp, $headers);
 
-       /* $filename = "new_file.csv";
-        $fp = fopen('d:\OpenServer\domains\localhost\test_task\\'.$filename, 'w');*/
-
-        foreach($mass_data as $row) {
+        foreach($data_to_write as $row) {
             fputcsv($fp, $row);
         }
 
         fclose($fp);
-
-
 
         return $this->view->render($this->nameTemplate('index'), $this->pageData);
     }

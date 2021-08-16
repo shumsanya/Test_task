@@ -13,7 +13,10 @@ use app\models\IndexModel;
             <button class="btn btn-info" style="color: #a71d2a; font-weight: bold">Сохранить данные таблици в файл</button>
         </a>
     <?php }else { ?>
-        <button class="btn btn-info" style="color: #a71d2a">Сохранить данные таблици в файл</button>
+        <a href="<?php $str = "http://localhost/test_task_MVC/save/? filter=". $pageData['filter']."& save=true &". http_build_query($pageData['data_get_params']); echo $str?>">
+            <button class="btn btn-info" style="color: #a71d2a; font-weight: bold">Сохранить данные таблици в файл</button>
+        </a>
+
     <?php } ?>
 </div>
 
@@ -23,8 +26,9 @@ use app\models\IndexModel;
         <tr class="table-info">
             <th scope="col" style="color: #005cbf">category
                 <div class="btn-group dropright">
-                    <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="padding: 0 3px;"></button>
+                    <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style=" color: #db4e4e ; padding: 0 6px;  "></button>
                     <div class="dropdown-menu" >
+                        <h6 class="dropdown-header">Выберите категорию для сортировки</h6>
                         <?php
                         $heading_name = IndexModel::get_unique_names('category');
                         foreach($heading_name as $value){  ?>
@@ -35,8 +39,9 @@ use app\models\IndexModel;
             </th>
             <th scope="col" style="color: #005cbf">firstname
                 <div class="btn-group dropright">
-                    <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="padding: 0 3px;"></button>
+                    <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style=" color: #db4e4e ; padding: 0 6px;  "></button>
                     <div class="dropdown-menu" >
+                        <h6 class="dropdown-header">Выберите имя для сортировки</h6>
                         <?php
                         $heading_name = IndexModel::get_unique_names('firstname');
                         foreach($heading_name as $value){  ?>
@@ -47,8 +52,9 @@ use app\models\IndexModel;
             </th>
             <th scope="col" style="color: #005cbf">lastname
                 <div class="btn-group dropright">
-                    <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="padding: 0 3px;"></button>
+                    <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style=" color: #db4e4e ; padding: 0 6px;  "></button>
                     <div class="dropdown-menu" >
+                        <h6 class="dropdown-header">Выберите фамилию для сортировки</h6>
                         <?php
                         $heading_name = IndexModel::get_unique_names('lastname');
                         foreach($heading_name as $value){  ?>
@@ -60,8 +66,9 @@ use app\models\IndexModel;
             <th scope="col" style="color: #005cbf">email</th>
             <th scope="col" style="color: #005cbf">gender
                 <div class="btn-group dropright">
-                    <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="padding: 0 3px;"></button>
+                    <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style=" color: #db4e4e ; padding: 0 6px;  "></button>
                     <div class="dropdown-menu" >
+                        <h6 class="dropdown-header">Выберите пол для сортировки</h6>
                         <?php
                         $heading_name = IndexModel::get_unique_names('gender');
                         foreach($heading_name as $value){  ?>
@@ -71,9 +78,11 @@ use app\models\IndexModel;
                 </div>
             </th>
             <th scope="col" style="color: #005cbf">birthDate
-                <div class="btn-group dropright">
-                    <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="padding: 0 3px;"></button>
+                <div class="btn-group dropleft">
+                    <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false"
+                        style=" color: #db4e4e ; padding: 0 6px;  "></button>
                     <div class="dropdown-menu" >
+                        <h6 class="dropdown-header">Сортируйте по дате, или по возрасту</h6>
                         <?php echo get_form();?>
                     </div>
                 </div>
@@ -155,26 +164,8 @@ function get_form(){
     return '
 <!--<div class="dropdown-divider"></div>
 <a class="dropdown-item" href="#">X</a>-->
-   <form class="px-4 py-3" method="get" >
-
-        <div class="form-group">
-            <div class="form-check">
-                <input type="radio" id="max_min" name="ege" value="max_min">
-                <label class="form-check-label" for="max_min">
-                    отобрать от > до <
-                </label>
-            </div>
-        </div>
-    
-        <div class="form-group">
-            <div class="form-check">
-                <input type="radio" id="min_max" name="ege" value="min_max" required>
-                <label class="form-check-label" for="min_max">
-                    отобрать от < до >
-                </label>
-            </div>
-        </div>
-    
+   <form class="px-6 py-4" method="get" style="width: 250px; margin: 15px">
+   
         <div class="form-group">
             <label for="min_ege">укажите минимальный возраст</label>
             <input type="date" class="form-control" name="min_ege" id="min_ege" placeholder="1" required>
@@ -185,11 +176,31 @@ function get_form(){
             <input type="date" class="form-control" name="max_ege" id="max_ege" placeholder="100 +" required >
         </div>
    
+     <div class="form-group">
+            <div class="form-check">
+                <input type="radio" id="max_min" name="ege" value="max_min">
+                <label class="form-check-label" for="max_min">
+                    от большего к меньшему
+                </label> 
+            </div>
+        </div>
+    
+        <div class="form-group">
+            <div class="form-check">
+                <input type="radio" id="min_max" name="ege" value="min_max" required>
+                <label class="form-check-label" for="min_max">
+                    от меньшего к большему
+                </label>
+            </div>
+        </div>
+    
         <input type="hidden" name="filter" value="3">
     
         <button type="submit" class="btn btn-primary">Сортировать</button>
     </form>
-
+    
+    <div class="dropdown-divider"></div>
+    
     <form class="px-4 py-3" method="get" >
          <div class="form-group">
             <label for="number_years">Введите число и узнаете кому исполнилось такое количество лет</label>

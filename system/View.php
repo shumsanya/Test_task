@@ -10,6 +10,5 @@ class View
     {
         include VIEW_PATH.'main.php';
         include VIEW_PATH.$template;
-       // include VIEW_PATH.'/save/index.php';
     }
 }

@@ -2,7 +2,6 @@
 namespace app\controllers;
 
 use app\models\IndexModel;
-//use app\system\View;
 
 
 class IndexController extends Controller
@@ -68,10 +67,8 @@ class IndexController extends Controller
                         $this->pageData['data_get_params'] = array('ege' => $_GET['ege'], 'min_ege' => $_GET['min_ege'], 'max_ege' => $_GET['max_ege']);
                         break;
                     case 4:
-                        $last_number_id = is_null($_GET['last_number_id']) ? 0 : $_GET['last_number_id'];
-                        $this->pageData['data_with_sorting'] = $model->get_full_years($_GET['number_years'], $number_of_lines, $last_number_id);
-                        $last_number_id = $this->pageData['data_with_sorting'][9]['id'];
-                        $this->pageData['data_get_params'] = array('number_years' => $_GET['number_years'], 'last_number_id' => $last_number_id);
+                        $this->pageData['data_with_sorting'] = $model->get_full_years($_GET['number_years'], $number_of_lines, $beginning_of_choice);
+                        $this->pageData['data_get_params'] = array('number_years' => $_GET['number_years']);
                         break;
                 }
             } else {

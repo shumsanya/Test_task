@@ -18,7 +18,7 @@ class IndexModel extends Model
         $stm->bindParam(':beginning_of_choice', $beginning_of_choice, PDO::PARAM_INT);
         $stm->bindParam(':number_of_lines', $number_of_lines, PDO::PARAM_INT);
         $stm->execute();
-        return $data = $stm->fetchAll();
+        return $data = $stm->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
@@ -27,7 +27,7 @@ class IndexModel extends Model
         $sql = "SELECT DISTINCT ".$column." FROM test ORDER BY ".$column;
         $stm =  self::$db->prepare($sql);
         $stm->execute();
-        return $data = $stm->fetchAll();
+        return $data = $stm->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
@@ -42,7 +42,7 @@ class IndexModel extends Model
         $stm->bindParam(':number_of_lines', $number_of_lines, PDO::PARAM_INT);
 
         $stm->execute();
-        return $data = $stm->fetchAll();
+        return $data = $stm->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
@@ -69,11 +69,11 @@ class IndexModel extends Model
         $stm->bindParam(':number_of_lines', $number_of_lines, PDO::PARAM_INT);
         $stm->execute();
 
-        return $data = $stm->fetchAll();
+        return $data = $stm->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
-    public static function get_full_years($number_years, $number_of_lines, $last_number_id){
+    public static function get_full_years($number_years, $number_of_lines, $beginning_of_choice){
 
       $end_of_period = date('Y-m-d', strtotime('-'.$number_years.' year'));
       $beginning_of_period = date('Y-m-d', strtotime($end_of_period.' -1 year'));
@@ -81,16 +81,15 @@ class IndexModel extends Model
         $beginning_of_period = strval($beginning_of_period);
         $end_of_period = strval($end_of_period);
 
-      $sql = "SELECT * FROM test WHERE birthDate > :beginning_of_period AND birthDate <= :and_of_period LIMIT :last_number_id, :number_of_lines";
-     // $sql = "SELECT * FROM test WHERE birthDate > '2000-01-10' AND birthDate <= '2001-01-10' ORDER BY birthDate LIMIT 10";
+      $sql = "SELECT * FROM test WHERE birthDate > :beginning_of_period AND birthDate <= :and_of_period LIMIT :beginning_of_choice, :number_of_lines";
       $stm = self::$db->prepare($sql);
       $stm->bindParam(':beginning_of_period', $beginning_of_period);
       $stm->bindParam(':and_of_period', $end_of_period);
-      $stm->bindParam(':last_number_id', $last_number_id, PDO::PARAM_INT);
+      $stm->bindParam(':beginning_of_choice', $beginning_of_choice, PDO::PARAM_INT);
       $stm->bindParam(':number_of_lines', $number_of_lines, PDO::PARAM_INT);
       $stm->execute();
 
-        return $data = $stm->fetchAll();
+        return $data = $stm->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
