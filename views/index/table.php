@@ -1,7 +1,7 @@
 <?php
 use app\models\IndexModel;
 
-
+/* @var $pageData ..\\controllers\IndexController */
 ?>
 <div class="container" style="margin-top: 30px">
     <?php if (!isset($pageData['data_without_sorting'])){?>
