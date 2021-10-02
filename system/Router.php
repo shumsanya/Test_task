@@ -5,34 +5,27 @@ namespace app\system;
 
 class Router
 {
-    public static function buildRout()
+     public static function buildRout()
     {
 
         //* контроллер и action по умолчанию
         $controllerName = 'IndexController';
-        $modelName = 'IndexModel';
         $action = 'Index';
 
         //* создаем масив, с помощью разделителя, из урла
         $route = explode("/", $_SERVER['REQUEST_URI']);
 
         //* задаем название Контроллеру
-        if ($route[2] != '' && strpos($route[2], '?') === false){
-            $controllerName = ucfirst($route[2]);
+        if (!empty($route[2])){
+            $controllerName = ucfirst(trim($route[2], '?'));
             $controllerName = $controllerName.'Controller';
-            $modelName = ucfirst($route[2]);
         }
 
         //* задаем название Методу (action)
-        if ($route[3] && $route != "" && strpos($route[3], '?') === false) {
-            $action = ucfirst($route[3]);
-            // $action = 'action'.$action;
+        if (!empty($route[3])) {
+            $action = ucfirst(trim($route[3], '?'));
+            echo ('metod  '.$action);
         }
-//        //* не совсем красивый подход, Если приходят GET параметры создать Метод в томже Контроллере
-//
-//        if ($route[2] != '' && strpos($route[2], '?') !== false){
-//            $action = 'Sort';
-//        }
 
         $controllerName = '\app\controllers\\' . $controllerName;
 
@@ -45,7 +38,12 @@ class Router
             self::errorPage('метод  - '. $action .' -  класса '.$controllerName.'  не найден');
         }
 
-        $controller->$action();
+        if (!empty($route[4])){
+            $controller->$action($route[4]);
+        }else{
+            $controller->$action();
+        }
+
     }
 
     public static function errorPage($e)
