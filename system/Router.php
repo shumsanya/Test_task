@@ -16,15 +16,14 @@ class Router
         $route = explode("/", $_SERVER['REQUEST_URI']);
 
         //* задаем название Контроллеру
-        if (!empty($route[2])){
-            $controllerName = ucfirst(trim($route[2], '?'));
+        if (!empty($route[2]) && strpos($route[2], '?') === false){
+            $controllerName = ucfirst($route[2]);
             $controllerName = $controllerName.'Controller';
         }
 
         //* задаем название Методу (action)
-        if (!empty($route[3])) {
-            $action = ucfirst(trim($route[3], '?'));
-            echo ('metod  '.$action);
+        if (!empty($route[3]) && $route != "" && strpos($route[3], '?') === false) {
+            $action = ucfirst($route[3]);
         }
 
         $controllerName = '\app\controllers\\' . $controllerName;
@@ -38,12 +37,7 @@ class Router
             self::errorPage('метод  - '. $action .' -  класса '.$controllerName.'  не найден');
         }
 
-        if (!empty($route[4])){
-            $controller->$action($route[4]);
-        }else{
-            $controller->$action();
-        }
-
+        $controller->$action();
     }
 
     public static function errorPage($e)
